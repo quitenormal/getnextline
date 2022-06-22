@@ -6,10 +6,9 @@
 /*   By: yjirapin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 21:05:46 by yjirapin          #+#    #+#             */
-/*   Updated: 2022/06/22 03:44:37 by yjirapin         ###   ########.fr       */
+/*   Updated: 2022/06/22 15:26:58 by yjirapin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
@@ -21,11 +20,11 @@
 # endif
 
 char	*get_next_line(int fd);
-char	*ft_read4myman(int fd, char *left_str);
+char	*ft_read4myman(int fd, char *mainman);
 char	*ft_strchr(char *s, int c);
-char	*ft_strjoin(char *left_str, char *buff);
+char	*ft_strjoin(char *mainman, char *buff);
 size_t	ft_strlen(char *s);
-char	*ft_getme_aline(char *left_str);
-char	*ft_new_left_str(char *left_str);
+char	*ft_getme_myline(char *mainman);
+char	*ft_new_mainman(char *mainman);
 
 #endif

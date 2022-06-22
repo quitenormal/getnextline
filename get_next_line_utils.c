@@ -6,7 +6,7 @@
 /*   By: yjirapin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 19:39:51 by yjirapin          #+#    #+#             */
-/*   Updated: 2022/06/22 14:42:04 by yjirapin         ###   ########.fr       */
+/*   Updated: 2022/06/22 15:27:20 by yjirapin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,31 +55,31 @@ is freed then the str variable is returedd as a longer
 string called mainman)
 */
 
-char	*ft_strjoin(char *left_str, char *buff)
+char	*ft_strjoin(char *mainman, char *buff)
 {
 	size_t	i;
 	size_t	j;
 	char	*str;
 
-	if (!left_str)
+	if (!mainman)
 	{
-		left_str = (char *)malloc(1 * sizeof(char));
-		left_str[0] = '\0';
+		mainman = (char *)malloc(1 * sizeof(char));
+		mainman[0] = '\0';
 	}
-	if (!left_str || !buff)
+	if (!mainman || !buff)
 		return (NULL);
-	str = malloc(sizeof(char) * ((ft_strlen(left_str) + ft_strlen(buff)) + 1));
+	str = malloc(sizeof(char) * ((ft_strlen(mainman) + ft_strlen(buff)) + 1));
 	if (str == NULL)
 		return (NULL);
 	i = -1;
 	j = 0;
-	if (left_str)
-		while (left_str[++i] != '\0')
-			str[i] = left_str[i];
+	if (mainman)
+		while (mainman[++i] != '\0')
+			str[i] = mainman[i];
 	while (buff[j] != '\0')
 		str[i++] = buff[j++];
-	str[ft_strlen(left_str) + ft_strlen(buff)] = '\0';
-	free(left_str);
+	str[ft_strlen(mainman) + ft_strlen(buff)] = '\0';
+	free(mainman);
 	return (str);
 }
 /*****************************
@@ -107,29 +107,29 @@ the newline character.
 	is not yet free. It can't be free because line is
 	needed as the return varilable.
 */
-char	*ft_getme_aline(char *left_str)
+char	*ft_getme_myline(char *mainman)
 {
 	int		i;
 	char	*str;
 
 	i = 0;
-	if (!left_str[i])
+	if (!mainman[i])
 		return (NULL);
-	while (left_str[i] && left_str[i] != '\n')
+	while (mainman[i] && mainman[i] != '\n')
 		i++;
 
 	str = (char *)malloc(sizeof(char) * (i + 2));
 	if (!str)
 		return (NULL);
 	i = 0;
-	while (left_str[i] && left_str[i] != '\n')
+	while (mainman[i] && mainman[i] != '\n')
 	{
-		str[i] = left_str[i];
+		str[i] = mainman[i];
 		i++;
 	}
-	if (left_str[i] == '\n')
+	if (mainman[i] == '\n')
 	{
-		str[i] = left_str[i];
+		str[i] = mainman[i];
 		i++;
 	}
 	str[i] = '\0';
@@ -150,7 +150,7 @@ YYY
 is a part of the text beyond the newline. This part
 will need to be kept in str (which will require memory).
 5) The memory allocated to str is, therefore,
-char size x ft_strlen(left_str) - i + 1.
+char size x ft_strlen(mainman) - i + 1.
 6) Increment i by 1. This is the position of first character
 in mainman which follows the newline.
 7) Using j as index (starting with 0), str is populated
@@ -158,28 +158,28 @@ with the rest of mainman followed by \0.
 8) The used mainman is finally free (not needed anymore).
 9) str is returned (as the new mainman actually)
 */
-char	*ft_new_left_str(char *left_str)
+char	*ft_new_mainman(char *mainman)
 {
 	int		i;
 	int		j;
 	char	*str;
 
 	i = 0;
-	while (left_str[i] && left_str[i] != '\n')
+	while (mainman[i] && mainman[i] != '\n')
 		i++;
-	if (!left_str[i])
+	if (!mainman[i])
 	{
-		free(left_str);
+		free(mainman);
 		return (NULL);
 	}
-	str = (char *)malloc(sizeof(char) * (ft_strlen(left_str) - i + 1));
+	str = (char *)malloc(sizeof(char) * (ft_strlen(mainman) - i + 1));
 	if (!str)
 		return (NULL);
 	i++;
 	j = 0;
-	while (left_str[i])
-		str[j++] = left_str[i++];
+	while (mainman[i])
+		str[j++] = mainman[i++];
 	str[j] = '\0';
-	free(left_str);
+	free(mainman);
 	return (str);
 }

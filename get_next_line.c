@@ -6,7 +6,7 @@
 /*   By: yjirapin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:13:03 by yjirapin          #+#    #+#             */
-/*   Updated: 2022/06/22 14:45:12 by yjirapin         ###   ########.fr       */
+/*   Updated: 2022/06/22 15:27:29 by yjirapin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ Note that mainman is a static variable so it
 doesn't get reset.
 */
 
-char	*ft_read4myman(int fd, char *left_str)
+char	*ft_read4myman(int fd, char *mainman)
 {
 	char	*buff;
 	int		read_bytes;
@@ -53,10 +53,8 @@ char	*ft_read4myman(int fd, char *left_str)
 	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buff)
 		return (NULL);
-
 	read_bytes = 1;
-
-	while (!ft_strchr(left_str, '\n') && read_bytes != 0)
+	while (!ft_strchr(mainman, '\n') && read_bytes != 0)
 	{
 		read_bytes = read(fd, buff, BUFFER_SIZE);
 		if (read_bytes == -1)
@@ -65,10 +63,10 @@ char	*ft_read4myman(int fd, char *left_str)
 			return (NULL);
 		}
 		buff[read_bytes] = '\0';
-		left_str = ft_strjoin(left_str, buff);
+		mainman = ft_strjoin(mainman, buff);
 	}
 	free(buff);
-	return (left_str);
+	return (mainman);
 }
 /* ---------------------------------------
 The function get_next_line takes only the file descriptor
@@ -90,25 +88,24 @@ variable.
 character.
 5) The static varilable mainman is stripped off the first
 part up to the first newline character and returned
-as the remaining part.
-*/
+as the remaining part. */
+
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*left_str;
+	static char	*mainman;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	left_str = ft_read4myman(fd, left_str);
-	if (!left_str)
+	mainman = ft_read4myman(fd, mainman);
+	if (!mainman)
 		return (NULL);
-	line = ft_getme_aline(left_str);
-	left_str = ft_new_left_str(left_str);
+	line = ft_getme_myline(mainman);
+	mainman = ft_new_mainman(mainman);
 	return (line);
 }
-/*
-int	main(void)
-{
+
+/*int	main(void) {
 	char	*line;
 	int		i;
 	int		fd1;
@@ -118,8 +115,7 @@ int	main(void)
 	fd2 = open("testme2.txt", O_RDONLY);
 	fd3 = open("testme3.txt", O_RDONLY);
 	i = 1;
-	while (i < 7)
-	{
+	while (i < 7)	{
 		line = get_next_line(fd1);
 		printf("line [%02d]: %s", i, line);
 		free(line);
@@ -135,5 +131,4 @@ int	main(void)
 	close(fd2);
 	close(fd3);
 	return (0);
-}
-*/
+} */
