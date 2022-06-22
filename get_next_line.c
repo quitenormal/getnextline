@@ -6,7 +6,7 @@
 /*   By: yjirapin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:13:03 by yjirapin          #+#    #+#             */
-/*   Updated: 2022/06/22 15:27:29 by yjirapin         ###   ########.fr       */
+/*   Updated: 2022/06/22 16:44:16 by yjirapin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/*int	main(void) {
+/*
+int	main(void) {
 	char	*line;
 	int		i;
 	int		fd1;
@@ -115,7 +116,7 @@ char	*get_next_line(int fd)
 	fd2 = open("testme2.txt", O_RDONLY);
 	fd3 = open("testme3.txt", O_RDONLY);
 	i = 1;
-	while (i < 7)	{
+	while (i < 7){
 		line = get_next_line(fd1);
 		printf("line [%02d]: %s", i, line);
 		free(line);
