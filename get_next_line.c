@@ -6,29 +6,28 @@
 /*   By: yjirapin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:13:03 by yjirapin          #+#    #+#             */
-/*   Updated: 2022/06/22 16:44:16 by yjirapin         ###   ########.fr       */
+/*   Updated: 2022/06/22 20:46:07 by yjirapin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
-#include <stdio.h>
-#include <fcntl.h>
 
 /*ft_read4myman is a function that takes a file descriptor
 and mainman as input and returns a string
-1) Set up the buff variable to be of size BUFFER_SIZE
-using malloc. Note that we check if memory allocation
+1) Set up the buff variable to be of size BUFFER_SIZE + 1
+using malloc. (+1 is for the ending /0)
+Note that we check if memory allocation
 is successful.
 2) Starting out with read_bytes = 1 (just so that
 it will enter the read while loop at least once)
-3) ft_strchr is used to check if there is already a newline
-in mainman. If there is already a newline in mainman or
-if read_bytes is 0 then mainman is returned.
+3) ft_strchr is used to check if there a newline
+in mainman. If there is not a newline in mainman or
+if read_bytes is not 0 then we keep on going.
 4) If there is no newline in mainman and the read_bytes isn't
 zero, then the file is read into the variable buff.
 5) Read quits if an error is encountered.
-In other words, it returns -1 if there is an error in which case
+In other words, read returns -1 if there is an error in which case
 	the buff variable is free and the execution
 	is returned to the calling function.
 6) After a successful read, the read_bytes is changed to the
@@ -39,7 +38,7 @@ buff[read_bytes] = '\0';
 using the str_join function.
 9) Step 3 - 8 is repeated until mainman contains a newline
 or until read_bytes = 0 (which means that we're at the
-end of the file)
+end of the file).
 10) memory for buff variable is freed and mainman is returned.
 Note that mainman is a static variable so it
 doesn't get reset.
