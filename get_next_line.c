@@ -6,71 +6,107 @@
 /*   By: yjirapin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:13:03 by yjirapin          #+#    #+#             */
-/*   Updated: 2022/06/21 18:49:36 by yjirapin         ###   ########.fr       */
+/*   Updated: 2022/06/22 14:45:12 by yjirapin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/* Hello everyone. I am coding. Look ma */
 
 #include "get_next_line.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
 
-char	*ft_read_to_left_str(int fd, char *left_str)
+/*ft_read4myman is a function that takes a file descriptor
+and mainman as input and returns a string
+1) Set up the buff variable to be of size BUFFER_SIZE
+using malloc. Note that we check if memory allocation
+is successful.
+2) Starting out with read_bytes = 1 (just so that
+it will enter the read while loop at least once)
+3) ft_strchr is used to check if there is already a newline
+in mainman. If there is already a newline in mainman or
+if read_bytes is 0 then mainman is returned.
+4) If there is no newline in mainman and the read_bytes isn't
+zero, then the file is read into the variable buff.
+5) Read quits if an error is encountered.
+In other words, it returns -1 if there is an error in which case
+	the buff variable is free and the execution
+	is returned to the calling function.
+6) After a successful read, the read_bytes is changed to the
+number of bytes read into buff.
+7) \0 is added to the end of the buff variable with
+buff[read_bytes] = '\0';
+8) Then mainman gets appended with the string in buff
+using the str_join function.
+9) Step 3 - 8 is repeated until mainman contains a newline
+or until read_bytes = 0 (which means that we're at the
+end of the file)
+10) memory for buff variable is freed and mainman is returned.
+Note that mainman is a static variable so it
+doesn't get reset.
+*/
+
+char	*ft_read4myman(int fd, char *left_str)
 {
 	char	*buff;
-	int		rd_bytes;
+	int		read_bytes;
 
-/* Set up the buffer to be of size BUFFER_SIZE
-*/
 	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buff)
 		return (NULL);
-	/* Starting out with rd_bytes = 1 for every call*/
-	rd_bytes = 1;
-	while (!ft_strchr(left_str, '\n') && rd_bytes != 0)
+
+	read_bytes = 1;
+
+	while (!ft_strchr(left_str, '\n') && read_bytes != 0)
 	{
-		/* Here, we call the function read to get
-		the buff variable populated. */
-		rd_bytes = read(fd, buff, BUFFER_SIZE);
-		/*read returns -1 if there is an error so
-		the buff variable is free and the execution
-		is returned to the calling function.*/
-		if (rd_bytes == -1)
+		read_bytes = read(fd, buff, BUFFER_SIZE);
+		if (read_bytes == -1)
 		{
 			free(buff);
 			return (NULL);
 		}
-		/*add \0 to the end of each buff size str*/
-		buff[rd_bytes] = '\0';
-		/*take buff and append it to left_str*/
+		buff[read_bytes] = '\0';
 		left_str = ft_strjoin(left_str, buff);
-		/*left_str is now old_left_str + buff plus \0*/
 	}
 	free(buff);
 	return (left_str);
 }
-
+/* ---------------------------------------
+The function get_next_line takes only the file descriptor
+as an input and returns a string which is the "next line
+of text in that file".
+1) If fd is less than zero
+or if buffer size is 0 or smaller
+then 0 is returned
+2) Using a static variable mainman that doesn't get reset
+ (sort of like a global variable
+except that it's not), the mainman is a series of buffer
+sized string appended together until a new line is found.
+3) The function read4myman is used to
+read the file and put a string into a variable.
+The static variable mainman is passed into this function
+and ask it to put the values return into the same static
+variable.
+4) line variable is the value of mainman up to the newline
+character.
+5) The static varilable mainman is stripped off the first
+part up to the first newline character and returned
+as the remaining part.
+*/
 char	*get_next_line(int fd)
 {
 	char		*line;
 	static char	*left_str;
-/* check if fd is less than zero
-or if buffer size is 0 or smaller */
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-/*Here, is a recursive function
-left_str is recursively read until null is reached.
-*/
-	left_str = ft_read_to_left_str(fd, left_str);
+	left_str = ft_read4myman(fd, left_str);
 	if (!left_str)
 		return (NULL);
 	line = ft_getme_aline(left_str);
 	left_str = ft_new_left_str(left_str);
 	return (line);
 }
-
+/*
 int	main(void)
 {
 	char	*line;
@@ -87,12 +123,12 @@ int	main(void)
 		line = get_next_line(fd1);
 		printf("line [%02d]: %s", i, line);
 		free(line);
-		line = get_next_line(fd2);
-		printf("line [%02d]: %s", i, line);
-		free(line);
-		line = get_next_line(fd3);
-		printf("line [%02d]: %s", i, line);
-		free(line);
+	//	line = get_next_line(fd2);
+	//	printf("line [%02d]: %s", i, line);
+	//	free(line);
+	//	line = get_next_line(fd3);
+	//	printf("line [%02d]: %s", i, line);
+	//	free(line);
 		i++;
 	}
 	close(fd1);
@@ -100,4 +136,4 @@ int	main(void)
 	close(fd3);
 	return (0);
 }
-
+*/

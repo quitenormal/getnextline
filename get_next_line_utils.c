@@ -1,35 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_utils.c                                        :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yjirapin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 19:39:51 by yjirapin          #+#    #+#             */
-/*   Updated: 2022/06/21 19:18:04 by yjirapin         ###   ########.fr       */
+/*   Updated: 2022/06/22 14:42:04 by yjirapin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-*	---------
-*	GET_LINE
-*	---------
-*	Extracts the line (ending in either line break and `\0` or only `\0` in EOF)
-*	from static variable.
-*	PARAMETERS
-*	#1. The pointer to the cumulative static variable from previous runs of get_next_line.
-*	RETURN VALUES
-*	The string with the full line ending in a line break (`\n`) + (`\0`).
-*/
-
-
 #include "get_next_line.h"
 
-/***********************
-ft_strlen will wow you with a beautiful output that is size_t.
-You only need to input a string and wa-lah!
-*/
-
+/* This function returns the size of str */
 size_t	ft_strlen(char *str)
 {
 	size_t	i;
@@ -42,6 +25,10 @@ size_t	ft_strlen(char *str)
 	return (i);
 }
 
+/*
+The ft_strchr() function returns a pointer to the first occurrence
+ of the character c in the string s.
+*/
 char	*ft_strchr(char *str, int c)
 {
 	int	i;
@@ -59,15 +46,21 @@ char	*ft_strchr(char *str, int c)
 	}
 	return (0);
 }
+/* The function ft_strjoin is actually a helper function
+where memory is first allocated to the
+static variable mainman if mainman is empty.
+It is also where the mainman variable is swapped out
+with a memory-allocated str variable. (The original mainman
+is freed then the str variable is returedd as a longer
+string called mainman)
+*/
 
 char	*ft_strjoin(char *left_str, char *buff)
 {
 	size_t	i;
 	size_t	j;
 	char	*str;
-/*if left_str is null
-then just allocate one byte and
-put \0 in it.*/
+
 	if (!left_str)
 	{
 		left_str = (char *)malloc(1 * sizeof(char));
@@ -87,55 +80,53 @@ put \0 in it.*/
 		str[i++] = buff[j++];
 	str[ft_strlen(left_str) + ft_strlen(buff)] = '\0';
 	free(left_str);
-	/* returning str which is left_str+buff plus \0*/
 	return (str);
 }
-/*
-*	ft_getme_aline
-*	Stores in the cumulative static variable the new updated variable with whatever
-*	is left from the original variable after the line is extracted.
-*	PARAMETERS
-*	The pointer to the cumulative static variable from previous runs of get_next_line.
-*	RETURN VALUES
-*	The new updated string which contains whatever is left from the original static variable value after extracting the
-*	line.
+/*****************************
+The function ft_getmyline takes the
+static variable mainman as input
+and returns a string to be put into
+the variable line.
+1) If mainman's first char is NULL then,
+return the string NULL.
+2) If each character in mainman is not null or
+a new line character then count i.
+3) i is now the number of characters in mainman
+excluding the newline.
+4) So now we know what the value of i is.
+Let's set up the str variable (allocating memory)
+to be 2 bytes larger than i to accomodate i = 0 and
+the newline character.
+5) Quit if you can't get enough memory
+	allocated.
+6) mainman value is put into str variable.
+7)	For the last character of mainman check if it is a new line.
+	If it is a newline, then put the newline into str and
+	increment i as well. Finally, set the last character
+	to \0 and return str. Note that str memory (or line)
+	is not yet free. It can't be free because line is
+	needed as the return varilable.
 */
-
 char	*ft_getme_aline(char *left_str)
 {
 	int		i;
 	char	*str;
 
 	i = 0;
-	/*stop and go back if left_str[i] is NULL*/
 	if (!left_str[i])
 		return (NULL);
-	/* while left_str[i] is not null and it is not a new line
-	increment i*/
 	while (left_str[i] && left_str[i] != '\n')
 		i++;
-	/*
-	So now we know what the value of i is.
-	Let's set up the str variable (allocating memory)
-	to be 2 bytes larger than i to accomodate i = 0 and
-	the end of line character.
-	*/
+
 	str = (char *)malloc(sizeof(char) * (i + 2));
-	/* Quit if you can't get enough memory
-	allocated. */
 	if (!str)
 		return (NULL);
-	/* Now put left_str into str (up to i characters)
-	*/
 	i = 0;
 	while (left_str[i] && left_str[i] != '\n')
 	{
 		str[i] = left_str[i];
 		i++;
 	}
-	/* For the last character if it is a new line,
-	put it in str. Otherwise let it be \0 and
-	return str. */
 	if (left_str[i] == '\n')
 	{
 		str[i] = left_str[i];
@@ -145,17 +136,28 @@ char	*ft_getme_aline(char *left_str)
 	return (str);
 }
 
-/* ----------------------------------------------------------------
-*	ft_new_left_str
-*	Stores in the cumulative static variable the new updated variable with whatever
-*	is left from the original, minus the line extracted.
-*	PARAMETERS
-*	#1. The pointer to the cumulative static variable from previous runs of get_next_line.
-*	RETURN VALUES
-*	The new updated string with whatever is left from the original static, minus the
-*	line extracted.
+/* The function ft_new_mainman takes mainman as input
+and free it before returning a NULL or a string.
+Without this function, there will be memory leaks.
+1) Starting with i = 0, find the i where there is
+ a newline or null. i is now the length of mainman.
+2) If the last char of mainman is null,
+ then just free mainman and return.
+YYY
+3) If the last char of mainman is newline,
+ then there is more work to do.
+4) If mainman length is more than i then, there
+is a part of the text beyond the newline. This part
+will need to be kept in str (which will require memory).
+5) The memory allocated to str is, therefore,
+char size x ft_strlen(left_str) - i + 1.
+6) Increment i by 1. This is the position of first character
+in mainman which follows the newline.
+7) Using j as index (starting with 0), str is populated
+with the rest of mainman followed by \0.
+8) The used mainman is finally free (not needed anymore).
+9) str is returned (as the new mainman actually)
 */
-
 char	*ft_new_left_str(char *left_str)
 {
 	int		i;
@@ -163,11 +165,8 @@ char	*ft_new_left_str(char *left_str)
 	char	*str;
 
 	i = 0;
-	/*finding the i where left_str ends or is null*/
 	while (left_str[i] && left_str[i] != '\n')
 		i++;
-	/* If left_str[i] is null, then it means we are done.
-	Don't forget to free left_str*/
 	if (!left_str[i])
 	{
 		free(left_str);
@@ -180,7 +179,6 @@ char	*ft_new_left_str(char *left_str)
 	j = 0;
 	while (left_str[i])
 		str[j++] = left_str[i++];
-	/* The last char is going to be \0 */
 	str[j] = '\0';
 	free(left_str);
 	return (str);
