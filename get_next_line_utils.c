@@ -6,7 +6,7 @@
 /*   By: yjirapin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 19:39:51 by yjirapin          #+#    #+#             */
-/*   Updated: 2022/06/23 19:50:17 by yjirapin         ###   ########.fr       */
+/*   Updated: 2022/06/23 20:33:52 by yjirapin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ It returns a pointer to the first occurrence
 char	*check4nl(char *str)
 {
 	int	i;
-	int c;
+	int	c;
 
 	i = 0;
 	c = '\n';
