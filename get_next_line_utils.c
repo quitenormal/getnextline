@@ -6,7 +6,7 @@
 /*   By: yjirapin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 19:39:51 by yjirapin          #+#    #+#             */
-/*   Updated: 2022/06/22 19:17:32 by yjirapin         ###   ########.fr       */
+/*   Updated: 2022/06/23 19:50:17 by yjirapin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,24 @@ size_t	ft_strlen(char *str)
 }
 
 /*
-The ft_strchr() function returns a pointer to the first occurrence
- of the character c in the string s.
+The check4nl() function checks for a newline character.
+It returns a pointer to the first occurrence
+ of the newline in the string s.
  0 is returned if the str itself is empty or if a match
  is never found.
- If c is \0 then the address of the
- last character in str is returned which is &str[ft_strlen(str)].
- Otherwise, i is used as an index and each character is
- compared to c one-by-one until a match is found which
+ i is used as an index and each character is
+ compared to c one-by-one until a newline character is found which
  will result in the address, &str[i], being returned.
 */
-char	*ft_strchr(char *str, int c)
+char	*check4nl(char *str)
 {
 	int	i;
+	int c;
 
 	i = 0;
+	c = '\n';
 	if (!str)
 		return (0);
-	if (c == '\0')
-		return ((char *)&str[ft_strlen(str)]);
 	while (str[i] != '\0')
 	{
 		if (str[i] == (char) c)

@@ -6,7 +6,7 @@
 /*   By: yjirapin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 21:05:46 by yjirapin          #+#    #+#             */
-/*   Updated: 2022/06/22 16:13:12 by yjirapin         ###   ########.fr       */
+/*   Updated: 2022/06/23 19:48:54 by yjirapin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 char	*get_next_line(int fd);
 char	*ft_read4myman(int fd, char *mainman);
-char	*ft_strchr(char *s, int c);
+char	*check4nl(char *s);
 char	*ft_strjoin(char *mainman, char *buff);
 size_t	ft_strlen(char *s);
 char	*ft_getme_myline(char *mainman);

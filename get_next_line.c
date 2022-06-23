@@ -6,7 +6,7 @@
 /*   By: yjirapin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 20:13:03 by yjirapin          #+#    #+#             */
-/*   Updated: 2022/06/22 20:46:07 by yjirapin         ###   ########.fr       */
+/*   Updated: 2022/06/23 19:45:50 by yjirapin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*ft_read4myman(int fd, char *mainman)
 	if (!buff)
 		return (NULL);
 	read_bytes = 1;
-	while (!ft_strchr(mainman, '\n') && read_bytes != 0)
+	while (!check4nl(mainman) && read_bytes != 0)
 	{
 		read_bytes = read(fd, buff, BUFFER_SIZE);
 		if (read_bytes == -1)
